@@ -65,7 +65,7 @@ class HeaderLanding extends StatelessWidget {
               TypewriterAnimatedText(
                 'Solusi pengiriman barang cepat & aman',
                 textStyle: const TextStyle(
-                  color: Colors.white70,
+                  color: Colors.white,
                   fontSize: 14,
                   fontStyle: FontStyle.italic,
                 ),
