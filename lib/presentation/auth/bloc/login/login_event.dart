@@ -1,6 +1,5 @@
 part of 'login_bloc.dart';
 
-@immutable
 sealed class LoginEvent {}
 
 class LoginRequested extends LoginEvent {
@@ -8,3 +7,7 @@ class LoginRequested extends LoginEvent {
 
   LoginRequested({required this.requestModel});
 }
+
+class AmbilNamaPenggunaRequested extends LoginEvent {}
+
+class LogoutRequested extends LoginEvent {}
