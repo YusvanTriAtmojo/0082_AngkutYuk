@@ -13,11 +13,11 @@ class KategoriAddScreen extends StatefulWidget {
 
 class _KategoriAddScreenState extends State<KategoriAddScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _namaKategoriController = TextEditingController();
+  final namaKategoriController = TextEditingController();
 
   @override
   void dispose() {
-    _namaKategoriController.dispose();
+    namaKategoriController.dispose();
     super.dispose();
   }
 
@@ -63,7 +63,7 @@ class _KategoriAddScreenState extends State<KategoriAddScreen> {
                   ),
                   SizedBox(height: 8),
                   TextFormField(
-                    controller: _namaKategoriController,
+                    controller: namaKategoriController,
                     decoration: InputDecoration(
                       hintText: 'Masukkan nama kategori kendaraan',
                       filled: true,
@@ -95,7 +95,7 @@ class _KategoriAddScreenState extends State<KategoriAddScreen> {
                           : () {
                               if (_formKey.currentState!.validate()) {
                                 final requestModel = KategoriRequestModel(
-                                  namaKategori: _namaKategoriController.text,
+                                  namaKategori: namaKategoriController.text,
                                 );
                                 context.read<KategoriBloc>().add(
                                   KategoriCreateRequested(requestModel: requestModel),
