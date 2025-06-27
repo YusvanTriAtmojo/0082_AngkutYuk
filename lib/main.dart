@@ -34,6 +34,14 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               RegisterBloc(authRepository: AuthRepository(ServiceHttpClient())),
         ),
+        BlocProvider(
+          create: (context) =>
+              KategoriBloc(kategoriRepository: KategoriRepository(ServiceHttpClient())),
+        ),
+        BlocProvider(
+          create: (context) =>
+              KendaraanBloc(kendaraanRepository: KendaraanRepository(ServiceHttpClient())),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
