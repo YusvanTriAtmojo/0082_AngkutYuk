@@ -42,6 +42,10 @@ class MyApp extends StatelessWidget {
           create: (context) =>
               KendaraanBloc(kendaraanRepository: KendaraanRepository(ServiceHttpClient())),
         ),
+        BlocProvider(
+          create: (context) =>
+              PetugasBloc(petugasRepository: PetugasRepository(ServiceHttpClient())),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
