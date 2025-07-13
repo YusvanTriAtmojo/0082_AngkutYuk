@@ -46,6 +46,27 @@ class KendaraanRepository {
     }
   }
 
+  Future<Either<String, String>> updateKendaraan(
+    int idKendaraan,
+    KendaraanRequestModel request,
+  ) async {
+    try {
+      final response = await httpClient.put(
+        "admin/kendaraan/$idKendaraan",
+        request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return Right("Kendaraan berhasil diubah");
+      } else {
+        final errorMessage = json.decode(response.body);
+        return Left(errorMessage['message'] ?? 'Gagal mengubah kendaraan');
+      }
+    } catch (e) {
+      return _infopenyimpangan(e);
+    }
+  }
+
   Future<Either<String, String>> deleteKendaraan(int id) async {
     try {
       final response = await httpClient.delete(
