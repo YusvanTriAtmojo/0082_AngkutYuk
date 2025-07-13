@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:angkut_yuk/data/model/request/admin/petugas_request_model.dart';
 import 'package:angkut_yuk/data/model/response/get_all_petugas_response_model.dart';
+import 'package:angkut_yuk/data/model/response/petugas_response_model.dart';
 import 'package:angkut_yuk/services/service_http_client.dart';
 import 'package:dartz/dartz.dart';
 
@@ -28,6 +29,23 @@ class PetugasRepository {
     }
   }
 
+  Future<Either<String, DataPetugas>> getProfile() async {
+    try {
+      final response = await httpClient.get("petugas/profile");
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final petugas= DataPetugas.fromJson(jsonResponse['data']);
+        return Right(petugas);
+      } else {
+        final error = json.decode(response.body);
+        return Left(error['message'] ?? 'Gagal mengambil data petugas');
+      }
+    } catch (e) {
+      return _infopenyimpangan(e);
+    }
+  }
+
   Future<Either<String, String>> createPetugas(PetugasRequestModel request) async {
     try {
       final response = await httpClient.postWithToken(
@@ -40,6 +58,27 @@ class PetugasRepository {
       } else {
         final errorMessage = json.decode(response.body);
         return Left(errorMessage['message'] ?? 'Gagal menambahkan petugas');
+      }
+    } catch (e) {
+      return _infopenyimpangan(e);
+    }
+  }
+
+  Future<Either<String, String>> updatePetugas(
+    int idPetugas,
+    PetugasRequestModel request,
+  ) async {
+    try {
+      final response = await httpClient.put(
+        "admin/petugas/$idPetugas",
+        request.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        return Right("Petugas berhasil diubah");
+      } else {
+        final errorMessage = json.decode(response.body);
+        return Left(errorMessage['message'] ?? 'Gagal mengubah petugas');
       }
     } catch (e) {
       return _infopenyimpangan(e);
