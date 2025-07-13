@@ -80,7 +80,7 @@ class PesananPetugasBloc extends Bloc<PesananEvent, PesananState> {
       (error) => emit(PesananFailure(error)),
       (data) {
         emit(PesananSuccess("Bukti selesai berhasil diunggah"));
-        add(AmbilPesananSelesaiEvent());
+        add(AmbilPesananAktifEvent());
       },
     );
   }
