@@ -14,6 +14,8 @@ class PetugasBloc extends Bloc<PetugasEvent, PetugasState> {
   PetugasBloc({required this.petugasRepository}) : super(PetugasInitial()) {
     on<PetugasRequested>(_onPetugasRequested);
     on<PetugasCreateRequested>(_onPetugasCreateRequested);
+    on<PetugasUpdateRequested>(_onPetugasUpdateRequested);
+    on<FilterStatusPetugas>(_onStatusPetugas);
     on<PetugasDeleted>(_onPetugasDeleted);
   }
 
@@ -44,6 +46,52 @@ class PetugasBloc extends Bloc<PetugasEvent, PetugasState> {
       (failure) => emit(PetugasFailure(error: failure)),
       (message) => emit(PetugasOperationSuccess(message: message)),
     );
+  }
+
+  Future<void> _onPetugasUpdateRequested(
+    PetugasUpdateRequested event,
+    Emitter<PetugasState> emit,
+  ) async {
+    emit(PetugasLoading());
+
+    final result = await petugasRepository.updatePetugas(
+      event.id,
+      event.requestModel,
+    );
+
+    result.fold(
+      (error) => emit(PetugasFailure(error: error)),
+      (message) => emit(PetugasOperationSuccess(message: message)),
+    );
+  }
+
+  Future<void> _onStatusPetugas(
+    FilterStatusPetugas event,
+    Emitter<PetugasState> emit,
+  ) async {
+    if (state is PetugasLoaded) {
+      final list = (state as PetugasLoaded).listPetugas;
+
+      final filtered = list
+          .where((p) =>
+              p.statusPetugas.toLowerCase() == event.status.toLowerCase())
+          .toList();
+
+      emit(PetugasFiltered(filteredPetugas: filtered));
+    } else {
+      final result = await petugasRepository.getAllPetugas();
+      result.fold(
+        (error) => emit(PetugasFailure(error: error)),
+        (data) {
+          final filtered = data.dataPetugas
+              .where((p) =>
+                  p.statusPetugas.toLowerCase() == event.status.toLowerCase())
+              .toList();
+
+          emit(PetugasFiltered(filteredPetugas: filtered));
+        },
+      );
+    }
   }
 
   Future<void> _onPetugasDeleted(
