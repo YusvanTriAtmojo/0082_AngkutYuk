@@ -56,11 +56,11 @@ class _DaftarpesananScreenState extends State<DaftarpesananScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Pesanan #${pesanan.id} - ${pesanan.status}",
+                              "No ${pesanan.id} - ${pesanan.status}",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 4),
-                            Text("Pelanggan: ${pesanan.pelanggan?.namaPelanggan ?? '-'}"),
+                            Text("${pesanan.pelanggan?.namaPelanggan}"),
                             SizedBox(height: 4),
                             Text("Harga: Rp${pesanan.biaya}"),
                           ],
