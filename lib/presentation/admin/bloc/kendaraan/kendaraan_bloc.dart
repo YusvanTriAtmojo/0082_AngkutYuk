@@ -15,6 +15,9 @@ class KendaraanBloc extends Bloc<KendaraanEvent, KendaraanState> {
     on<KendaraanRequested>(_onKendaraanRequested);
     on<KendaraanCreateRequested>(_onKendaraanCreateRequested);
     on<KendaraanDeleted>(_onKendaraanDeleted);
+    on<KendaraanUpdateRequested>(_onKendaraanUpdateRequested);
+    on<FilterKendaraanByKategori>(_onKendaraanFilter);
+    on<FilterKendaraanByStatus>(_onKendaraanFilterStatus);
   }
 
   Future<void> _onKendaraanRequested(
@@ -45,6 +48,70 @@ class KendaraanBloc extends Bloc<KendaraanEvent, KendaraanState> {
       (message) => emit(KendaraanOperationSuccess(message: message)),
     );
   }
+
+  Future<void> _onKendaraanFilter(
+    FilterKendaraanByKategori event,
+    Emitter<KendaraanState> emit,
+  ) async {
+    if (state is KendaraanLoaded) {
+      final loadedState = state as KendaraanLoaded;
+
+      final filtered = loadedState.listKendaraan
+          .where((k) =>
+              k.idKategori == event.idKategori &&
+              k.statusKendaraan.toLowerCase() == 'tersedia')
+          .toList();
+
+      emit(KendaraanFiltered(filtered));
+    }
+  }
+
+  Future<void> _onKendaraanFilterStatus(
+    FilterKendaraanByStatus event,
+    Emitter<KendaraanState> emit,
+  ) async {
+    if (state is KendaraanLoaded) {
+      final list = (state as KendaraanLoaded).listKendaraan;
+
+      final filtered = list
+          .where((k) =>
+              k.statusKendaraan.toLowerCase() == event.status.toLowerCase())
+          .toList();
+
+      emit(KendaraanFiltered(filtered));
+    } else {
+      final result = await kendaraanRepository.getAllKendaraan();
+      result.fold(
+        (error) => emit(KendaraanFailure(error: error)),
+        (data) {
+          final filtered = data.dataKendaraan
+              .where((k) =>
+                  k.statusKendaraan.toLowerCase() == event.status.toLowerCase())
+              .toList();
+
+          emit(KendaraanFiltered(filtered));
+        },
+      );
+    }
+  }
+
+  Future<void> _onKendaraanUpdateRequested(
+    KendaraanUpdateRequested event,
+    Emitter<KendaraanState> emit,
+  ) async {
+    emit(KendaraanLoading());
+
+    final result = await kendaraanRepository.updateKendaraan(
+      event.id,
+      event.requestModel,
+    );
+
+    result.fold(
+      (error) => emit(KendaraanFailure(error: error)),
+      (message) => emit(KendaraanOperationSuccess(message: message)),
+    );
+  }
+
 
   Future<void> _onKendaraanDeleted(
     KendaraanDeleted event,
