@@ -14,7 +14,7 @@ class PelangganRequestModel {
   factory PelangganRequestModel.fromJson(String str) =>
       PelangganRequestModel.fromMap(json.decode(str));
 
-  String toRawJson() => json.encode(toMap());
+  Map<String, dynamic> toJson() => toMap();
 
   factory PelangganRequestModel.fromMap(Map<String, dynamic> json) =>
       PelangganRequestModel(
@@ -24,8 +24,8 @@ class PelangganRequestModel {
       );
 
   Map<String, dynamic> toMap() => {
-    "nama_pelanggan": namaPelanggan,
-    "notlp_pelanggan": notlpPelanggan,
-    "alamat_pelanggan": alamatPelanggan,
+        "nama_pelanggan": namaPelanggan,
+        "notlp_pelanggan": notlpPelanggan,
+        "alamat_pelanggan": alamatPelanggan,
   };
 }
