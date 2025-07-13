@@ -10,7 +10,30 @@ final class KendaraanCreateRequested extends KendaraanEvent {
   KendaraanCreateRequested({required this.requestModel});
 }
 
-class KendaraanDeleted extends KendaraanEvent {
+final class FilterKendaraanByKategori extends KendaraanEvent {
+  final int idKategori;
+
+  FilterKendaraanByKategori(this.idKategori);
+}
+
+final class FilterKendaraanByStatus extends KendaraanEvent {
+  final String status;
+
+  FilterKendaraanByStatus(this.status);
+}
+
+final class KendaraanUpdateRequested extends KendaraanEvent {
+  final int id;
+  final KendaraanRequestModel requestModel;
+
+  KendaraanUpdateRequested({
+    required this.id,
+    required this.requestModel,
+  });
+}
+
+
+final class KendaraanDeleted extends KendaraanEvent {
   final int id;
 
   KendaraanDeleted(this.id);
