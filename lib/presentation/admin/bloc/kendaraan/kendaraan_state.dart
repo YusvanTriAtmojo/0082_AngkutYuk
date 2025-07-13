@@ -18,6 +18,12 @@ final class KendaraanOperationSuccess extends KendaraanState {
   KendaraanOperationSuccess({required this.message});
 }
 
+final class KendaraanFiltered extends KendaraanState {
+  final List<Kendaraan> filteredKendaraan;
+
+  KendaraanFiltered(this.filteredKendaraan);
+}
+
 final class KendaraanFailure extends KendaraanState {
   final String error;
 
