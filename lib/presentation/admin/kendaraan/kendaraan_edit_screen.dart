@@ -22,6 +22,7 @@ class _KendaraanEditScreenState extends State<KendaraanEditScreen> {
   late final TextEditingController platController;
   late final TextEditingController kapasitasController;
   int? selectedKategoriId;
+  String? selectedStatus;
 
   @override
   void initState() {
@@ -36,6 +37,7 @@ class _KendaraanEditScreenState extends State<KendaraanEditScreen> {
       text: widget.kendaraan.kapasitasMuatan.toString(),
     );
     selectedKategoriId = widget.kendaraan.idKategori;
+    selectedStatus = widget.kendaraan.statusKendaraan;
 
     context.read<KategoriBloc>().add(KategoriRequested());
   }
@@ -223,6 +225,50 @@ class _KendaraanEditScreenState extends State<KendaraanEditScreen> {
                       }
                     },
                   ),
+                  if ((widget.kendaraan.statusKendaraan.toLowerCase() == 'tersedia' ||
+                    widget.kendaraan.statusKendaraan.toLowerCase() == 'rusak'))
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                      SizedBox(height: 16),
+                      Text('Status Kendaraan'),
+                      SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        value: selectedStatus,
+                        decoration: InputDecoration(
+                          hintText: "Pilih Status",
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide(color: Warna.ungu, width: 2),
+                          ),
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'tersedia', child: Text('Tersedia')),
+                          DropdownMenuItem(value: 'rusak', child: Text('Rusak')),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedStatus = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Status wajib dipilih';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 80),
                   ElevatedButton(
                     onPressed:
@@ -237,7 +283,7 @@ class _KendaraanEditScreenState extends State<KendaraanEditScreen> {
                                     kapasitasController.text,
                                   ),
                                   statusKendaraan:
-                                      widget.kendaraan.statusKendaraan,
+                                      selectedStatus ?? widget.kendaraan.statusKendaraan,
                                   idKategori: selectedKategoriId,
                                 );
 
