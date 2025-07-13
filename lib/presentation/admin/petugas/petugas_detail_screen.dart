@@ -1,14 +1,17 @@
-import 'package:angkut_yuk/data/model/response/get_all_petugas_response_model.dart';
-import 'package:angkut_yuk/presentation/admin/bloc/petugas/petugas_bloc.dart';
+import 'package:angkut_yuk/presentation/admin/petugas/petugas_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:angkut_yuk/core/color/color.dart';
+import 'package:angkut_yuk/data/model/response/get_all_petugas_response_model.dart';
+import 'package:angkut_yuk/presentation/admin/bloc/petugas/petugas_bloc.dart';
 
 class PetugasDetailScreen extends StatelessWidget {
   final Petugas petugas;
+
   const PetugasDetailScreen({
-    super.key, 
-    required this.petugas});
+    super.key,
+    required this.petugas,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class PetugasDetailScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Warna.ungubackgorund,
                   borderRadius: BorderRadius.circular(12),
@@ -52,45 +55,73 @@ class PetugasDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-           SizedBox(height: 30,),
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (dialogContext) {
-                    return AlertDialog(
-                      title: Text("Konfirmasi"),
-                      content: Text("Yakin ingin menghapus petugas ini?"),
-                      actions: [
-                        TextButton(
-                          child: Text("Batal"),
-                          onPressed: () => Navigator.of(dialogContext).pop(),
-                        ),
-                        TextButton(
-                          child: Text("Hapus", style: TextStyle(color: Colors.red)),
-                          onPressed: () {
-                            Navigator.of(dialogContext).pop();
-                            context.read<PetugasBloc>().add(PetugasDeleted(petugas.idPetugas));
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
+            SizedBox(height: 30,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PetugasEditScreen(petugas: petugas),
+                      ),
                     );
                   },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(150, 48), 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orangeAccent,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(150, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
-                child: Text(
-                  "Hapus",
-                  style: TextStyle(fontSize: 16),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (dialogContext) {
+                        return AlertDialog(
+                          title: Text("Konfirmasi"),
+                          content: Text("Yakin ingin menghapus petugas ini?"),
+                          actions: [
+                            TextButton(
+                              child: Text("Batal"),
+                              onPressed: () => Navigator.of(dialogContext).pop(),
+                            ),
+                            TextButton(
+                              child: Text("Hapus", style: TextStyle(color: Colors.red)),
+                              onPressed: () {
+                                Navigator.of(dialogContext).pop();
+                                context.read<PetugasBloc>().add(PetugasDeleted(petugas.idPetugas));
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(150, 48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                  ),
+                  child: Text(
+                    "Hapus",
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
+              ],
             ),
           ],
         ),
