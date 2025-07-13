@@ -6,6 +6,7 @@ import 'package:angkut_yuk/data/model/request/pelanggan/pesanan_request_model.da
 import 'package:angkut_yuk/data/model/response/pesanan_admin_response_model.dart';
 import 'package:angkut_yuk/data/model/response/pesanan_petugas_response_model.dart';
 import 'package:angkut_yuk/data/model/response/pesanan_response_model.dart';
+import 'package:angkut_yuk/data/model/response/pesanan_selesai_response_model.dart';
 import 'package:angkut_yuk/services/service_http_client.dart';
 import 'package:dartz/dartz.dart';
 
@@ -124,7 +125,7 @@ class PesananRepository {
     }
   }
 
-  Future<Either<String, DataPesanan>> uploadBuktiSelesai(int id, File fotoBukti) async {
+  Future<Either<String, UploadBuktiData>> uploadBuktiSelesai(int id, File fotoBukti) async {
     try {
       final response = await httpClient.uploadFile(
         endPoint: 'petugas/pesanan/$id/bukti',
@@ -132,15 +133,14 @@ class PesananRepository {
         fieldName: 'foto_bukti_selesai',
       );
 
+      final jsonResponseStr = await response.stream.bytesToString();
+      final jsonResponse = json.decode(jsonResponseStr);
+
       if (response.statusCode == 200) {
-        final jsonResponseStr = await response.stream.bytesToString();
-        final jsonResponse = json.decode(jsonResponseStr);
-        final data = DataPesanan.fromJson(jsonResponse['data']);
+        final data = UploadBuktiData.fromJson(jsonResponse['data']);
         return Right(data);
       } else {
-        final jsonResponseStr = await response.stream.bytesToString();
-        final error = json.decode(jsonResponseStr);
-        return Left(error['message'] ?? 'Gagal upload bukti selesai');
+        return Left(jsonResponse['message'] ?? 'Gagal upload bukti selesai');
       }
     } catch (e) {
       return _infopenyimpangan(e);
