@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'dart:io';
 
 class ServiceHttpClient {
-  final String baseUrl = 'http://192.168.100.6:8000/api/';
+  final String baseUrl = 'http://10.0.2.2:8000/api/';
   final secureStorage = FlutterSecureStorage();
 
   Future<http.Response> post(String endPoint, Map<String, dynamic> body) async {
