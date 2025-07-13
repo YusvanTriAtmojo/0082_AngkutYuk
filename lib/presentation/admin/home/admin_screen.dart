@@ -1,5 +1,7 @@
 import 'package:angkut_yuk/presentation/admin/kategori/kategori_screen.dart';
 import 'package:angkut_yuk/presentation/admin/kendaraan/kendaraan_screen.dart';
+import 'package:angkut_yuk/presentation/admin/keuangan/keuangan_screen.dart';
+import 'package:angkut_yuk/presentation/admin/pesanan/daftarpesanan_screen.dart';
 import 'package:angkut_yuk/presentation/admin/petugas/petugas_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +35,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget halamanContent() {
     switch (pilihIndex) {
       case 0:
-        return Text("Data Home");
+        return DaftarpesananScreen();
       case 1:
         return KendaraanScreen();
       case 2:
@@ -41,7 +43,7 @@ class _AdminScreenState extends State<AdminScreen> {
       case 3:
         return PetugasScreen();
       case 4:
-        return Text("Data Keuangan");
+        return KeuanganScreen();
       default:
         return Text("Halaman Tidak Ditemukan");
     }
