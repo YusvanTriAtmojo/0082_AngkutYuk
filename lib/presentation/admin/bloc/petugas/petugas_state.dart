@@ -18,6 +18,12 @@ final class PetugasOperationSuccess extends PetugasState {
   PetugasOperationSuccess({required this.message});
 }
 
+final class PetugasFiltered extends PetugasState {
+  final List<Petugas> filteredPetugas;
+
+  PetugasFiltered({required this.filteredPetugas});
+}
+
 final class PetugasFailure extends PetugasState {
   final String error;
 
