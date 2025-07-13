@@ -10,8 +10,24 @@ final class PetugasCreateRequested extends PetugasEvent {
   PetugasCreateRequested({required this.requestModel});
 }
 
-class PetugasDeleted extends PetugasEvent {
+final class PetugasUpdateRequested extends PetugasEvent {
+  final int id;
+  final PetugasRequestModel requestModel;
+
+  PetugasUpdateRequested({
+    required this.id,
+    required this.requestModel,
+  });
+}
+
+final class PetugasDeleted extends PetugasEvent {
   final int id;
 
   PetugasDeleted(this.id);
+}
+
+final class FilterStatusPetugas extends PetugasEvent {
+   final String status;
+
+  FilterStatusPetugas(this.status);
 }
